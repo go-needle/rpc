@@ -19,10 +19,17 @@ type Option struct {
 	CodecType   codec.Type // client may choose different Codec to encode body
 }
 
-var DefaultOption = &Option{
+var JsonOption = &Option{
+	MagicNumber: MagicNumber,
+	CodecType:   codec.JsonType,
+}
+
+var GobOption = &Option{
 	MagicNumber: MagicNumber,
 	CodecType:   codec.GobType,
 }
+
+var DefaultOption = GobOption
 
 // Server represents an RPC Server.
 type Server struct{}

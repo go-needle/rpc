@@ -24,15 +24,14 @@ func startServer(addr chan string) {
 func main() {
 	addr := make(chan string)
 	go startServer(addr)
-
 	// in fact, following code is like a simple rpc client
 	conn, _ := net.Dial("tcp", <-addr)
 	defer func() { _ = conn.Close() }()
 
 	time.Sleep(time.Second)
 	// send options
-	_ = json.NewEncoder(conn).Encode(rpc.DefaultOption)
-	cc := codec.NewGobCodec(conn)
+	_ = json.NewEncoder(conn).Encode(rpc.JsonOption)
+	cc := codec.NewJsonCodec(conn)
 	// send request & receive response
 	for i := 0; i < 5; i++ {
 		h := &codec.Header{
