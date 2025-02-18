@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-needle/rpc/codec"
+	"github.com/go-needle/rpc/log"
 	"io"
-	"log"
 	"net"
 	"sync"
 )
@@ -128,12 +128,12 @@ func NewClient(conn net.Conn, opt *Option) (*Client, error) {
 	f := codec.NewCodecFuncMap[opt.CodecType]
 	if f == nil {
 		err := fmt.Errorf("invalid codec type %s", opt.CodecType)
-		log.Println("rpc client: codec error:", err)
+		log.Error("rpc client: codec error:", err)
 		return nil, err
 	}
 	// send options with server
 	if err := json.NewEncoder(conn).Encode(opt); err != nil {
-		log.Println("rpc client: options error: ", err)
+		log.Error("rpc client: options error: ", err)
 		_ = conn.Close()
 		return nil, err
 	}
@@ -222,7 +222,7 @@ func (client *Client) Go(serviceMethod string, args, reply any, done chan *Call)
 	if done == nil {
 		done = make(chan *Call, 10)
 	} else if cap(done) == 0 {
-		log.Panic("rpc client: done channel is unbuffered")
+		log.Fatal("rpc client: done channel is unbuffered")
 	}
 	call := &Call{
 		ServiceMethod: serviceMethod,
