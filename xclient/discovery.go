@@ -76,7 +76,7 @@ func (d *MultiServersDiscovery) Get(mode SelectMode) (string, error) {
 	}
 }
 
-// returns all servers in discovery
+// GetAll returns all servers in discovery
 func (d *MultiServersDiscovery) GetAll() ([]string, error) {
 	d.mu.RLock()
 	defer d.mu.RUnlock()

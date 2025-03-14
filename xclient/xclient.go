@@ -86,7 +86,7 @@ func (xc *XClient) Broadcast(ctx context.Context, serviceMethod string, args, re
 		wg.Add(1)
 		go func(rpcAddr string) {
 			defer wg.Done()
-			var clonedReply interface{}
+			var clonedReply any
 			if reply != nil {
 				clonedReply = reflect.New(reflect.ValueOf(reply).Elem().Type()).Interface()
 			}
